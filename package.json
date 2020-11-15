@@ -1,0 +1,22 @@
+{
+  "name": "html-to-pdf-dynamic",
+  "version": "1.0.0",
+  "description": "Convert HTML to PDF dynamic",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JordyVanKerkvoorde/html-to-pdf-dynamic.git"
+  },
+  "author": "Jordy Van Kerkvoorde",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/JordyVanKerkvoorde/html-to-pdf-dynamic/issues"
+  },
+  "homepage": "https://github.com/JordyVanKerkvoorde/html-to-pdf-dynamic#readme",
+  "dependencies": {
+    "html-pdf": "^2.2.0"
+  }
+}

@@ -7,7 +7,7 @@ Generate a PDF from your own html template and add variables to it.
 
 ## Usage
 
-```
+``` javascript
 htmlToPdfDynamic({
     name: 'testOne',
     destination: './test/output',

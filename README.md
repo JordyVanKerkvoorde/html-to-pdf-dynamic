@@ -1,5 +1,6 @@
 # html-to-pdf-dynamic
 Generate a PDF from your own html template and add variables to it.
++ https://www.npmjs.com/package/html-to-pdf-dynamic
 
 ## Installation
 

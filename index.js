@@ -15,25 +15,6 @@ const pdf = require('html-pdf');
     }
 */
 
-// htmlToPdfDynamic({
-//     name: 'testOne',
-//     destination: './test/output',
-//     pathToHtml: './test/template/template.html',
-//     variables: [
-//         {
-//             name: 'header2',
-//             value: 'this is a h2 header'
-//         },
-//         {
-//             name: 'item1',
-//             value: 'this is list-item'
-//         },
-//         {
-//             name: 'item2',
-//             value: 'another list-item'
-//         },
-//     ]
-// });
 
 function htmlToPdfDynamic(options){
     var html = fs.readFileSync(`${options.pathToHtml}`, 'utf8');

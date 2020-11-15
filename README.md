@@ -37,3 +37,8 @@ htmlToPdfDynamic({
 + *variables* - array of variables you want to change in the HTML (variables must of this format: {{ variableName }})
     + *name* - name of the variable in your HTML template
     + *value* - the value of your variable
+
+## Dependancy
+This project was created with the node-html-pdf module
+- https://github.com/marcbachmann/node-html-pdf
+- https://www.npmjs.com/package/html-pdf

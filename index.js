@@ -44,7 +44,7 @@ function htmlToPdfDynamic(options){
     options.variables.forEach(variable => {
         let replace = `{{ ${variable.name} }}`;
         let regex = new RegExp(replace, "g");
-        html = html.replace(regex, `${variable.value}`)
+        html = html.replace(regex, `${variable.value}`);
     })
 
     pdf.create(html, pdfOptions).toFile(`${options.destination}/${options.name}.pdf`, function(err, res) {
@@ -52,3 +52,5 @@ function htmlToPdfDynamic(options){
         console.log(res);
     });
 }
+
+module.exports.htmlToPdfDynamic = htmlToPdfDynamic;

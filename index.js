@@ -15,20 +15,39 @@ const pdf = require('html-pdf');
     }
 */
 
+// htmlToPdfDynamic({
+//     name: 'testOne',
+//     destination: './test/output',
+//     pathToHtml: './test/template/template.html',
+//     variables: [
+//         {
+//             name: 'header2',
+//             value: 'this is a h2 header'
+//         },
+//         {
+//             name: 'item1',
+//             value: 'this is list-item'
+//         },
+//         {
+//             name: 'item2',
+//             value: 'another list-item'
+//         },
+//     ]
+// });
 
 function htmlToPdfDynamic(options){
     var html = fs.readFileSync(`${options.pathToHtml}`, 'utf8');
-    var options = { 
+    var pdfOptions = { 
         format: 'Letter'
     };
 
-    let vars = options.variables
-
-    vars.foreach(variable =>{
-        html = html.replaceAll(`{{${variable.name}}}`, `${variable.value}`)
+    options.variables.forEach(variable => {
+        let replace = `{{ ${variable.name} }}`;
+        let regex = new RegExp(replace, "g");
+        html = html.replace(regex, `${variable.value}`)
     })
 
-    pdf.create(html, options).toFile(`${options.path}/${options.name}`, function(err, res) {
+    pdf.create(html, pdfOptions).toFile(`${options.destination}/${options.name}.pdf`, function(err, res) {
         if (err) return console.log(err);
         console.log(res);
     });

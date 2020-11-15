@@ -39,6 +39,6 @@ htmlToPdfDynamic({
     + *value* - the value of your variable
 
 ## Dependancy
-This project was created with the node-html-pdf module
+This project was created with the node-html-pdf module by [Marc Bachmann](https://github.com/marcbachmann)
 - https://github.com/marcbachmann/node-html-pdf
 - https://www.npmjs.com/package/html-pdf

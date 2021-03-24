@@ -16,7 +16,7 @@ const pdf = require('html-pdf');
 */
 
 
-function htmlToPdfDynamic(options){
+async function htmlToPdfDynamic(options){
     var html = fs.readFileSync(`${options.pathToHtml}`, 'utf8');
     var pdfOptions = { 
         format: 'Letter'
@@ -28,10 +28,14 @@ function htmlToPdfDynamic(options){
         html = html.replace(regex, `${variable.value}`);
     })
 
-    pdf.create(html, pdfOptions).toFile(`${options.destination}/${options.name}.pdf`, function(err, res) {
-        if (err) return console.log(err);
-        console.log(res);
-    });
+    const createPDF = (html, pdfOptions) => new Promise(((resolve, reject) => {
+        pdf.create(html, pdfOptions).toFile(`${options.destination}/${options.name}.pdf`, function(err, res) {
+            if (err) return console.log(err);
+            resolve(res);
+        });
+    }));
+
+    await createPDF(html, pdfOptions);
 }
 
 module.exports.htmlToPdfDynamic = htmlToPdfDynamic;

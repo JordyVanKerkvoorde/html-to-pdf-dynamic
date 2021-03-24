@@ -16,17 +16,21 @@ const pdf = require('html-pdf');
 */
 
 
+
 async function htmlToPdfDynamic(options){
     var html = fs.readFileSync(`${options.pathToHtml}`, 'utf8');
     var pdfOptions = { 
         format: 'Letter'
     };
 
-    options.variables.forEach(variable => {
-        let replace = `{{ ${variable.name} }}`;
-        let regex = new RegExp(replace, "g");
-        html = html.replace(regex, `${variable.value}`);
-    })
+    var regex = /{{[ a-zA-Z0-9\.]*}}/gi, result, variables = [];
+    while ( (result = regex.exec(html)) ) {
+        variables.push(result[0]);
+    };
+    
+    variables.forEach(variable => {
+        html = html.replace(new RegExp(variable, 'g'), eval(`options.data.${variable.replace(/[{} ]/gi, '')}`));
+    });
 
     const createPDF = (html, pdfOptions) => new Promise(((resolve, reject) => {
         pdf.create(html, pdfOptions).toFile(`${options.destination}/${options.name}.pdf`, function(err, res) {

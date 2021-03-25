@@ -5,6 +5,7 @@ Generate a PDF from your own html template and add variables to it.
 ## Change log
 - made function async
 - changed from variables to data where data now contains json objects
+- added (basic) for loop support
 
 ## Installation
 
@@ -20,24 +21,40 @@ htmlToPdfDynamic({
     data: {
         exampleObject: {
             name: 'this is an example'
-        }
+        },
+        exampleArray: [
+            {
+                objParam: 'this is an example array',
+                objVal: 'just showing how it could work'
+            },
+            {
+                objParam: 'this is an example array',
+                objVal: 'just showing how it could work'
+            }
+        ]
     }
 });
 ```
+
+### for loop support
+``` html
+<div>
+    {{*for(object in exampleArray)
+        <div class="message">
+            <p>$object.objParam$</p>
+            <p>$object.objVal$</p>
+        </div>
+    }}
+</div>
+```
+- note: not tested on nested arrays (example jsonObject.myExampleArray)
 
 ## Options
 
 + *name* - title of the pdf file that will be created
 + *destination* - path to the destination of the generated pdf
 + *pathToHtml* - path to your HTML template
-+ *data* - object of jsonObjects you want to change in the HTML (variables must of this format: {{ jsonObject.variableName }})
-
-## Important remarks
-- if you want to add styling to your html the best option to do so is putting your style in the html page using a style tag.
-- to use flexbox properties try adding '-webkit-' in front of the style property:
-    - example: ``` display: -webkit-flex; ```
-    - this works on some flex properties but not all
-- for font-weight styling use numbers instead of bold, bolder etc. 
++ *data* - array of jsonObjects you want to change in the HTML (variables must of this format: {{ jsonObject.variableName }})
 
 ## Dependency
 This project was created with the node-html-pdf module by [Marc Bachmann](https://github.com/marcbachmann)

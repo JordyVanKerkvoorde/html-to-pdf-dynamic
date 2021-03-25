@@ -6,6 +6,7 @@ const pdf = require('html-pdf');
         name: "name of the file",
         destination: "path where the pdf should be saved",
         pathToHtml: "path to the html file",
+        renderDelay: 500,
         variables: [
             {
                 name: "name of variable specified in html (mustache)"
@@ -20,7 +21,8 @@ const pdf = require('html-pdf');
 async function htmlToPdfDynamic(options){
     var html = fs.readFileSync(`${options.pathToHtml}`, 'utf8');
     var pdfOptions = { 
-        format: 'Letter'
+        format: 'Letter',
+        renderDelay: options.renderDelay,
     };
 
     

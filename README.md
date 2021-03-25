@@ -35,6 +35,9 @@ htmlToPdfDynamic({
     }
 });
 ```
+### Extra options
+- **renderDelay:** value in milliseconds
+    - usefull for heavy rendering, increasing the delay will ensure the html page is completely loaded before rendering.
 
 ### for loop support
 ``` html

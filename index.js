@@ -1,5 +1,5 @@
 const fs = require('fs');
-const pdf = require('html-pdf');
+const puppeteer = require('puppeteer')
 
 /* 
     options = {
@@ -17,15 +17,22 @@ const pdf = require('html-pdf');
 */
 
 
+async function htmlToPdfDynamic(options) {
+    let html = fs.readFileSync(`${options.pathToHtml}`, 'utf8');
+    const browser = await puppeteer.launch({ headless: true });
+    const page = await browser.newPage();
 
-async function htmlToPdfDynamic(options){
-    var html = fs.readFileSync(`${options.pathToHtml}`, 'utf8');
-    var pdfOptions = { 
-        format: 'Letter',
-        renderDelay: options.renderDelay,
-    };
-
+    html = replaceHtmlLogic(html, options.data);
     
+    await page.setContent(html, { waitUntil: 'networkidle0' });
+
+    await page.pdf({ format: 'A4', path: `${options.destination}/${options.name}.pdf`, printBackground: true });
+
+
+    await browser.close();
+}
+
+function replaceHtmlLogic(html, data){
     var regexLoops = /{{\*for[^{}]*}}/gi, resultLoops, loops = [];
     while ( (resultLoops = regexLoops.exec(html)) ) {
         loops.push(resultLoops[0]);
@@ -43,7 +50,7 @@ async function htmlToPdfDynamic(options){
             vars.push(resultVars[0].replace(/\$/g, ''));
         };
 
-        options.data[dataObj].forEach(object => {
+        data[dataObj].forEach(object => {
             let objHtml = component;
             vars.forEach(variable =>{
                 const nested = variable.split('.').slice(1).join('.');
@@ -61,18 +68,13 @@ async function htmlToPdfDynamic(options){
     };
     
     variables.forEach(variable => {
-        html = html.replace(new RegExp(variable, 'g'), eval(`options.data.${variable.replace(/[{} ]/gi, '')}`));
+        let replacementData = eval(`data.${variable.replace(/[{} ]/gi, '')}`);
+        replacementData = JSON.stringify(replacementData);
+        html = html.replace(new RegExp(variable, 'g'), replacementData);
     });
 
-
-    const createPDF = (html, pdfOptions) => new Promise(((resolve, reject) => {
-        pdf.create(html, pdfOptions).toFile(`${options.destination}/${options.name}.pdf`, function(err, res) {
-            if (err) return console.log(err);
-            resolve(res);
-        });
-    }));
-
-    await createPDF(html, pdfOptions);
+    return html;
 }
+
 
 module.exports.htmlToPdfDynamic = htmlToPdfDynamic;

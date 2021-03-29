@@ -6,12 +6,17 @@ Generate a PDF from your own html template and add variables to it.
 - made function async
 - changed from variables to data where data now contains json objects
 - added (basic) for loop support
+- changed dependency node-html to puppeteer
 
 ## Installation
 
 `npm i html-to-pdf-dynamic`
 
 ## Usage
+
+``` html
+    <p>{{ exampleObject.name }}</p>
+```
 
 ``` javascript
 htmlToPdfDynamic({
@@ -35,9 +40,6 @@ htmlToPdfDynamic({
     }
 });
 ```
-### Extra options
-- **renderDelay:** value in milliseconds
-    - usefull for heavy rendering, increasing the delay will ensure the html page is completely loaded before rendering.
 
 ### for loop support
 ``` html
@@ -60,6 +62,4 @@ htmlToPdfDynamic({
 + *data* - array of jsonObjects you want to change in the HTML (variables must of this format: {{ jsonObject.variableName }})
 
 ## Dependency
-This project was created with the node-html-pdf module by [Marc Bachmann](https://github.com/marcbachmann)
-- https://github.com/marcbachmann/node-html-pdf
-- https://www.npmjs.com/package/html-pdf
+- built with puppeteer

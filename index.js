@@ -1,20 +1,5 @@
 const fs = require('fs');
-const puppeteer = require('puppeteer')
-
-/* 
-    options = {
-        name: "name of the file",
-        destination: "path where the pdf should be saved",
-        pathToHtml: "path to the html file",
-        renderDelay: 500,
-        variables: [
-            {
-                name: "name of variable specified in html (mustache)"
-                value: "value that the variable should have"
-            }
-        ]
-    }
-*/
+const puppeteer = require('puppeteer');
 
 
 async function htmlToPdfDynamic(options) {
@@ -50,15 +35,55 @@ function replaceHtmlLogic(html, data){
             vars.push(resultVars[0].replace(/\$/g, ''));
         };
 
-        data[dataObj].forEach(object => {
+        data[dataObj].forEach((object, index) => {
             let objHtml = component;
+            
+            // replace second nested loop
+            var regexLoop2 = /\[\[\*for[^\[\]]*\]\]/gi, resultLoop2, loop2s = [];
+            while ( (resultLoop2 = regexLoop2.exec(component)) ) {
+                loop2s.push(resultLoop2[0]);
+            };
+
+
+            if(loop2s.length >0){
+                loop2s.forEach((loop) => {
+                    let loopHeader = loop.match(new RegExp(/\*for\([a-zA-Z\$\. ]*\)/, 'ig'));
+                    loopHeader = loopHeader[0].replace('*for(', '').replace(')', '').split(' ');
+                    let [identifier2, dataObj2] = [loopHeader[0], loopHeader[2]];
+                    let component2= loop.replace(new RegExp(/\[\[\*for\([a-zA-Z\$\. ]*\)/, 'g'), '').replace(']]', '');
+    
+                    dataObj2 = `object.${dataObj2.replace(/\$/g, '').split('.').slice(1).join('1')}`;
+                    
+                    // get variables in inner forloop
+                    var regexVars2 = new RegExp(`\\$${identifier2}\\.[a-zA-Z\.]+\\$`, 'gi'), resultVars2, vars2 = [];
+                    while ( (resultVars2 = regexVars2.exec(component)) ) {
+                        vars2.push(resultVars2[0].replace(/\$/g, ''));
+                    };
+                    
+                    
+                    eval(dataObj2).forEach((appendix) => {
+                        let componenthtml = component2;
+                        // replace variables with values
+                        vars2.forEach(variable => {
+                            const nested = variable.split('.').slice(1).join('.');
+                            componenthtml = componenthtml.replace(`\$${variable}\$`, eval(`appendix.${nested}`));
+                        });
+                        objHtml = objHtml.replace(loop, componenthtml);
+                    });
+                    // maybe refactor
+                    objHtml = objHtml.replace(loop, '');
+                });
+            }
+            
+
+            // end replace second nested loop
+            
             vars.forEach(variable =>{
                 const nested = variable.split('.').slice(1).join('.');
                 objHtml = objHtml.replace(`\$${variable}\$`, eval(`object.${nested}`));
             });
             dataHtml += objHtml;
         })
-
         html = html.replace(loop, dataHtml)
     });
 

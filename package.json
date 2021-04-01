@@ -1,6 +1,6 @@
 {
   "name": "html-to-pdf-dynamic",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Convert HTML to PDF dynamic",
   "main": "index.js",
   "scripts": {
@@ -23,6 +23,7 @@
   },
   "homepage": "https://github.com/JordyVanKerkvoorde/html-to-pdf-dynamic#readme",
   "dependencies": {
+    "express": "^4.17.1",
     "puppeteer": "^8.0.0"
   }
 }

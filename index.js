@@ -60,16 +60,19 @@ function replaceHtmlLogic(html, data){
                         vars2.push(resultVars2[0].replace(/\$/g, ''));
                     };
                     
+                    let componenthtml = '';
                     
                     eval(dataObj2).forEach((appendix) => {
-                        let componenthtml = component2;
                         // replace variables with values
+                        let appendixhtml = component2;
                         vars2.forEach(variable => {
                             const nested = variable.split('.').slice(1).join('.');
-                            componenthtml = componenthtml.replace(`\$${variable}\$`, eval(`appendix.${nested}`));
+                            appendixhtml = appendixhtml.replace(`\$${variable}\$`, eval(`appendix.${nested}`));
                         });
-                        objHtml = objHtml.replace(loop, componenthtml);
+                        componenthtml += appendixhtml;
                     });
+                    
+                    objHtml = objHtml.replace(loop, componenthtml);
                     // maybe refactor
                     objHtml = objHtml.replace(loop, '');
                 });

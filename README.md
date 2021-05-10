@@ -94,6 +94,7 @@ htmlToPdfDynamic({
 - to prevent page breaks in the middle of your html add the following styles:
     - `style="page-break-after:always;"` this wil force a pagebreak after this html tag
     - `style="page-break-inside: avoid"` this wil avoid breaking inside your tag, usefull for images for instance
+- Depending on the node version you might need to install chromium manually. In this case you need to set the path to chromium as environment variable `CHROMIUM_PATH`
 
 
 ## Dependency

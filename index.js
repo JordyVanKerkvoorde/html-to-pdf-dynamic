@@ -4,7 +4,10 @@ const puppeteer = require('puppeteer');
 
 async function htmlToPdfDynamic(options) {
     let html = fs.readFileSync(`${options.pathToHtml}`, 'utf8');
-    const browser = await puppeteer.launch({ headless: true, args: ["--no-sandbox", "--disable-setuid-sandbox"] });
+    
+    const browser = process.env.CHROMIUM_PATH 
+        ? await puppeteer.launch({ executablePath: process.env.CHROMIUM_PATH, headless: true, args: ["--no-sandbox", "--disable-setuid-sandbox"] }) 
+        : await puppeteer.launch({ headless: true, args: ["--no-sandbox", "--disable-setuid-sandbox"] });
     const page = await browser.newPage();
 
     html = replaceHtmlLogic(html, options.data);

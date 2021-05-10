@@ -1,6 +1,6 @@
 {
   "name": "html-to-pdf-dynamic",
-  "version": "2.1.3",
+  "version": "2.1.4",
   "description": "Convert HTML to PDF dynamic",
   "main": "index.js",
   "scripts": {
